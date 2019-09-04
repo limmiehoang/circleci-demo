@@ -1,0 +1,9 @@
+package: github.com/limmiehoang/circleci-demo
+import:
+- package: github.com/BurntSushi/toml
+  version: ~0.2.0
+- package: github.com/zenazn/goji
+  version: ~1.0.0
+  subpackages:
+    - web
+    - web/middleware

@@ -1,0 +1,8 @@
+app_name = "khanh-circleci-demo"
+
+environment = "development"
+
+[server]
+listen = ":8081"
+
+whitelist = ["*"]

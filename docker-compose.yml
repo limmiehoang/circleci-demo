@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  demo:
+    image: limmiehoang/circleci-demo:test
+    container_name: circleci-demo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8088:8081"

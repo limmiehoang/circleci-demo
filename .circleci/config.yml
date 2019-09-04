@@ -2,7 +2,8 @@ version: 2
 
 jobs:
   build:
-    machine: true
+    docker:
+      -image: circleci/golang:1.7.4
     working_directory: /go/src/github.com/limmiehoang/circleci-demo
     steps:
       - checkout

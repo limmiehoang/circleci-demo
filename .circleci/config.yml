@@ -1,0 +1,18 @@
+version: 2
+
+jobs:
+  build:
+    machine: true
+    working_directory: /go/src/github.com/limmiehoang/circleci-demo
+    steps:
+      - checkout
+      - run:
+          name: Install docker compose
+          command: |
+            url -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      - setup_remote_docker
+      - run:
+          name: Build docker image
+          command: docker-compose build

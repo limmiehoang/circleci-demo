@@ -35,7 +35,16 @@ jobs:
       enabled: true
     steps:
       - run: |
-          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "echo 'deployed' > test.txt"
+          scp -P $SSH_PORT /go/src/github.com/limmiehoang/circleci-demo/cmd/demo/demo.toml $SSH_USER@$SSH_HOST:~/
+          scp -P $SSH_PORT /go/src/github.com/limmiehoang/circleci-demo/docker-compose.yml $SSH_USER@$SSH_HOST:~/
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST << EOF
+            mkdir -p /etc/circleci-demo;
+            mv demo.toml docker-compose.yml /etc/circleci-demo/;
+            cd /etc/circleci-demo;
+            docker-compose pull;
+            docker-compose down;
+            docker-compose up -d;
+          EOF
 
 workflows:
   version: 2

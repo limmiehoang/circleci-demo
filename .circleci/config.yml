@@ -60,10 +60,10 @@ jobs:
             --quiet \
             --project "${GOOGLE_PROJECT_ID}" \
             compute ssh "${INSTANCE_NAME}" \
-            ${GOOGLE_COMPUTE_INSTANCE} \
             --zone ${GOOGLE_COMPUTE_ZONE} \
             --strict-host-key-checking no \
-            --command "echo 'Minh Khanh' > test.txt"
+            --command "echo 'Minh Khanh' > test.txt" \
+            ${GOOGLE_COMPUTE_INSTANCE}
 
 workflows:
   version: 2

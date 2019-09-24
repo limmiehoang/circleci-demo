@@ -30,7 +30,7 @@ jobs:
             docker-compose build
             docker-compose push
 
-  deploy:
+  deploy_azure:
     docker:
       - image: circleci/golang:1.9
     working_directory: /go/src/github.com/limmiehoang/circleci-demo
@@ -48,12 +48,29 @@ jobs:
             docker-compose up -d;
           EOF
 
+  deploy_gcp:
+    docker:
+      - image: google/cloud-sdk:alpine
+    working_directory: /go/src/github.com/limmiehoang/circleci-demo
+    steps:
+      - checkout
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud beta compute --project ${GOOGLE_PROJECT_ID} ssh --zone ${GOOGLE_COMPUTE_ZONE} ${GOOGLE_COMPUTE_INSTANCE}
+          echo "Minh Khanh" > test.txt
+
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - build
-      - deploy:
+      - deploy_azure:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy_gcp:
           requires:
             - build
           filters:

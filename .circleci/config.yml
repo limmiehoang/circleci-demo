@@ -56,7 +56,8 @@ jobs:
       - checkout
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-          gcloud beta compute --project ${GOOGLE_PROJECT_ID} ssh --zone ${GOOGLE_COMPUTE_ZONE} ${GOOGLE_COMPUTE_INSTANCE}
+          echo $GOOGLE_COMPUTE_SSH_KEY > ${HOME}/google_compute_engine
+          gcloud compute --project ${GOOGLE_PROJECT_ID} ssh --ssh-key-file ${HOME}/google_compute_engine --zone ${GOOGLE_COMPUTE_ZONE} ${GOOGLE_COMPUTE_INSTANCE}
           echo "Minh Khanh" > test.txt
 
 workflows:
@@ -71,6 +72,7 @@ workflows:
             branches:
               only: master
       - deploy_gcp:
+          type: approval
           requires:
             - build
           filters:

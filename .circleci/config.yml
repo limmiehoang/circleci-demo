@@ -65,14 +65,13 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - deploy_azure:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+#      - deploy_azure:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only: master
       - deploy_gcp:
-          type: approval
           requires:
             - build
           filters:

@@ -56,13 +56,24 @@ jobs:
       - checkout
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet --project "$GOOGLE_PROJECT_ID" compute scp \
+            cmd/demo/demo.toml ${SSH_USER}@${GOOGLE_COMPUTE_INSTANCE}:~/
+          gcloud --quiet --project "$GOOGLE_PROJECT_ID" compute scp \
+            docker-compose.yml $SSH_USER@$GOOGLE_COMPUTE_INSTANCE:~/
           gcloud \
             --quiet \
-            --project "${GOOGLE_PROJECT_ID}" \
-            compute ssh "${SSH_USER}@${GOOGLE_COMPUTE_INSTANCE}" \
-            --zone "${GOOGLE_COMPUTE_ZONE}" \
+            --project "$GOOGLE_PROJECT_ID" \
+            compute ssh $SSH_USER@$GOOGLE_COMPUTE_INSTANCE \
+            --zone "$GOOGLE_COMPUTE_ZONE" \
             --strict-host-key-checking no \
-            --command "echo 'Minh Khanh' > test.txt" \
+            --command << EOF
+              mkdir -p /etc/circleci-demo;
+              mv demo.toml docker-compose.yml /etc/circleci-demo/;
+              cd /etc/circleci-demo;
+              docker-compose pull;
+              docker-compose down;
+              docker-compose up -d;
+            EOF
 
 workflows:
   version: 2

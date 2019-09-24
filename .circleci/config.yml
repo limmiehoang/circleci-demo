@@ -56,10 +56,14 @@ jobs:
       - checkout
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-          echo $GOOGLE_COMPUTE_SSH_KEY > ${HOME}/google_compute_engine
-          echo $GOOGLE_COMPUTE_SSH_KEY_PUB > ${HOME}/google_compute_engine.pub
-          gcloud compute --project ${GOOGLE_PROJECT_ID} ssh --ssh-key-file ${HOME}/google_compute_engine --zone ${GOOGLE_COMPUTE_ZONE} ${GOOGLE_COMPUTE_INSTANCE}
-          echo "Minh Khanh" > test.txt
+          gcloud \
+            --quiet \
+            --project "${GOOGLE_PROJECT_ID}" \
+            compute ssh "${INSTANCE_NAME}" \
+            ${GOOGLE_COMPUTE_INSTANCE} \
+            --zone ${GOOGLE_COMPUTE_ZONE} \
+            --strict-host-key-checking no \
+            --command "echo "Minh Khanh" > test.txt"
 
 workflows:
   version: 2

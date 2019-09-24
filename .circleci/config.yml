@@ -63,7 +63,7 @@ jobs:
             ${GOOGLE_COMPUTE_INSTANCE} \
             --zone ${GOOGLE_COMPUTE_ZONE} \
             --strict-host-key-checking no \
-            --command "echo "Minh Khanh" > test.txt"
+            --command "echo 'Minh Khanh' > test.txt"
 
 workflows:
   version: 2

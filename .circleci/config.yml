@@ -59,7 +59,7 @@ jobs:
           gcloud \
             --quiet \
             --project "${GOOGLE_PROJECT_ID}" \
-            compute ssh "${GOOGLE_COMPUTE_INSTANCE}" \
+            compute ssh "${SSH_USER}@${GOOGLE_COMPUTE_INSTANCE}" \
             --zone "${GOOGLE_COMPUTE_ZONE}" \
             --strict-host-key-checking no \
             --command "echo 'Minh Khanh' > test.txt" \

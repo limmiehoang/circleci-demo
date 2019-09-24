@@ -68,15 +68,14 @@ jobs:
             --project "$GOOGLE_PROJECT_ID" \
             compute ssh $SSH_USER@$GOOGLE_COMPUTE_INSTANCE \
             --zone "$GOOGLE_COMPUTE_ZONE" \
-            --command "$(cat << EOF
-              sudo mkdir -p /etc/circleci-demo;
-              sudo mv demo.toml docker-compose.yml /etc/circleci-demo/;
-              cd /etc/circleci-demo;
-              docker-compose pull;
-              docker-compose down;
-              docker-compose up -d;
-            EOF
-            )"
+            -- << EOF
+            sudo mkdir -p /etc/circleci-demo;
+            sudo mv demo.toml docker-compose.yml /etc/circleci-demo/;
+            cd /etc/circleci-demo;
+            docker-compose pull;
+            docker-compose down;
+            docker-compose up -d;
+          EOF
 
 workflows:
   version: 2
